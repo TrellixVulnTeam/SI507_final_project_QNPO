@@ -49,6 +49,17 @@ class TestingMisc(unittest.TestCase):
         test_output.text()
 
         self.assertEqual(test_output,requester_output)
+    def test_db_setup(self):
+        test_name_db = 'bogus_database'
+        db_user = 'bogus_user'
+        db_password = 'bogus_password'
+
+        test_string = "dbname = '{0}' user = '{1}' password='{2}'".format(test_name_db, db_user, db_password)
+        self.assertEqual(test_string,"dbname = 'bogus_database' user = 'bogus_user' password='bogus_password'")
+    def lenUmich(self):
+        self.assertEqual(len(position_list),50)
+    def lenIndeed(self):
+        self.assertEqual(len(indeed_resultUL.find_all(attrs={"data-tn-component": "organicJob"})),50)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

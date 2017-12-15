@@ -193,18 +193,6 @@ indeed_BS_list = indeed_resultUL.find_all('h2',attrs=('rel'=="noopener nofollow"
 new_indeed_result = indeed_BS_list
 # print('indeed_BS_list is type {}'.format(type(indeed_BS_list)))  It's a ResultSet
 
-# print('')
-# print('test')
-# print('')
-
-# print(len(indeed_resultUL.find_all('h2',attrs=('rel'=="noopener nofollow"))))
-# with open('indeed_newfindall','w') as f:
-    # f.write(str(indeed_resultUL.find_all('h2',attrs=('class'=="jobtitle"))))
-# indeed_jobtitles = indeed_resultUL.find_all(attrs={"class" == "jobtitle"})
-# with open("indeed_jobtitles",'w') as f:
-    # f.write(str(indeed_jobtitles))
-
-
 # Test to see what the new_umich_result looks like
 # with open("new_indeed_result",'w') as f:
     # f.write(str(new_indeed_result))
