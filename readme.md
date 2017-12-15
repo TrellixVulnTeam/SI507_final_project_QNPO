@@ -23,7 +23,7 @@ Create one called "umich_jobs" and label it as "db_name_umich". Create another c
 ### Explanation
 When the code runs, it will scrape 50 job postings from the umich career website, and indeed. Once this is done, the data is organized into a list of dictionaries, so that inputting it into the database follows the form: ({dict1},{dict2},...).
 
-The data is visuallized using matplotlib.pyplot. 
+The data is visuallized using matplotlib.pyplot. Expect to see a bar graph representing umich jobs and indeed jobs. 
 
 
 ### Sources
@@ -31,8 +31,3 @@ https://www.indeed.com/
 http://careers.umich.edu/
 Database coding borrowed heavily from pgexample_multiplerows_byname.py, from lecture
 https://pythonspot.com/en/matplotlib-bar-chart/
-
-
-    - What the user should expect after the code runs (what should they see, what do any numbers they see represent, what will get created at the end — a file? a chart? — and how they can view it, etc)
-    - Links to any resources used (e.g. client libraries, API documentation) and citations of any code borrowed from elsewhere
-    - Also include in the readme a list of everyone with whom you worked on any of the project or talked to about it in depth. Doing that is OK: sourcing help from others is great! But no two projects should be alike — this should be your own work.

@@ -1,12 +1,54 @@
 import unittest
 from SI507F17_project1_cards import *
 
-class TestingCardsProj1(unittest.TestCase):
-    def test_class_variables_exist_in_class_cards(self):
-        c = Card()
-        self.assertIsNotNone(c.suit_names)
-        self.assertIsNotNone(c.rank_levels)
-        self.assertIsNotNone(c.faces)
+class TestingIndeedClasses(unittest.TestCase):
+    def setUp(self):
+        test_list = ['<"something"><title=The_title123456789']
+    def test_indeed_class_title(self):
+        c = Results_indeed(test_list)
+        self.assertEqual(c.title,"The_title")
+    def test_indeed_class_string(self):
+        c = Results_indeed(test_list)
+        self.assertEqual(str(c),"Title is: The_title")
+    def test_indeed_class_method(self):
+        c = Results_indeed(test_list)
+        self.assertEqual(c.database_output(),'{"Posting_Title":"The_title"}')
+
+class TestingUmichClasses(unittest.TestCase):
+    def setUp(self):
+        test_list = {"Posting_Title":'<"something">The_title1234567<>',"Date_Posted":"12/13/2017","Department":"LSA"}
+    def test_indeed_class_title(self):
+        c = Results_umich(test_list)
+        self.assertEqual(c.title,"The_title")
+    def test_indeed_class_Date(self):
+        c = Results_umich(test_list)
+        self.assertEqual(c.date,"12/13/2017")
+    def test_indeed_class_department(self):
+        c = Results_umich(test_list)
+        self.assertEqual(c.department,"LSA")
+    def test_indeed_class_string(self):
+        c = Results_umich(test_list)
+        self.assertEqual(str(c),"Date is 12/13/2017, Title is: The_title, Dept is LSA")
+    def test_indeed_class_method(self):
+        c = Results_umich(test_list)
+        self.assertEqual(c.database_output(),'{"Posting_Title":"The_title", "Date_Posted":"12/13/2017", "Department":"LSA"}')
+
+class TestingMisc(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_requester(self):
+        baseurl = "http://careers.umich.edu/search/advanced"
+        params = {}
+        params["work_location"] = 4
+        params["keyword"] = ""
+        
+        requester_output = requester(baseurl,params)
+        
+        test_output = requests.get(baseurl, params = params)
+        test_output.encode('utf-8')
+        test_output.text()
+
+        self.assertEqual(test_output,requester_output)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

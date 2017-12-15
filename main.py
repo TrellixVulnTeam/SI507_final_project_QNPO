@@ -14,6 +14,14 @@ from config_finalproj import *
 TIMESTAMP = str(date.today())
 TIMESTAMP.replace(" ","_")
 
+# Functions
+def requester(base_url,params):
+    returnable = requests.get(baseurl, params = params)
+    returnable.encoding = 'utf-8'
+    returnable = returnable.text()
+    return returnable
+
+
 ### Scrape data from umich and save the raw html text file
 # http://careers.umich.edu/search/advanced?career_interest=&work_location=4&position=&regular_temporary=&keyword=&all_words=&this_phrase=&words1=&words2=&words3=&posting_date=&job_id=&department=&title=
 print("scraping umich")
@@ -27,9 +35,7 @@ except:
     params["keyword"] = ""
     
     # Get data from the url
-    umich_data = requests.get(baseurl, params = params)
-    umich_data.encoding = 'utf-8'
-    umich_data = umich_data.text
+    umich_data = requester(baseurl,params)
     # print(umich_data)
 
     # Make sure umich_data is a string
@@ -69,6 +75,7 @@ categories = ["Date_Posted","Posting_Title","Job_Opening_ID","Department","Work_
 data_dict = {}
 entries = {}
 job_list = []
+position_list = []
 i = 0
 entries_i = 1
 
@@ -110,6 +117,7 @@ else:
         data_dict[categories[4]] = str(new_umich_result[i+4])
         # print(data_dict)
         # print(Results_umich(data_dict))
+        position_list.append(str(new_umich_result[i+1]))
         job_list.append(Results_umich(data_dict))
         i+=5
 job_list_umich = ''
@@ -117,6 +125,7 @@ job_list_umich = ''
     # f.write(str(entries))
 for i in job_list:
     job_list_umich += '{},'.format(i.database_output())
+    
 job_list_umich = job_list_umich[:-1]
 print(job_list_umich)
 
@@ -139,9 +148,7 @@ except:
     params["limit"] = [50]
     
     # Get data from the url
-    indeed_data = requests.get(baseurl, params = params)
-    indeed_data.encoding = 'utf-8'
-    indeed_data = indeed_data.text
+    indeed_data = requester(baseurl,params)
     # print(indeed_data)
     
     # Make sure indeed_data is a string
@@ -235,44 +242,71 @@ for i in job_list_indeed:
 jobs_list_indeed = jobs_list_indeed[:-1]
 # print(jobs_list_indeed)
     
-# print('Putting umich data into the DB')
-# ###Putting the data into a database
-# try:
-    # conn = psycopg2.connect("dbname = '{0}' user = '{1}' password='{2}'".format(db_name_umich, db_user, db_password))
-    # print("Success connecting to the database")
+print('Putting umich data into the DB')
+###Putting the data into a database
+try:
+    conn = psycopg2.connect("dbname = '{0}' user = '{1}' password='{2}'".format(db_name_umich, db_user, db_password))
+    print("Success connecting to the database")
 
-# except:
-    # print("Unable to connect to the database")
-    # sys.exit(1)
+except:
+    print("Unable to connect to the database")
+    sys.exit(1)
 
-# ## SETUP FOR CREATING DATABASE AND INTERACTING IN PYTHON
-# # cur = conn.cursor()
-# cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor) # So you can insert by column name, instead of position, which makes the Python code even easier to write!
+## SETUP FOR CREATING DATABASE AND INTERACTING IN PYTHON
+# cur = conn.cursor()
+cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor) # So you can insert by column name, instead of position, which makes the Python code even easier to write!
 
-# ## Code to DROP TABLES IF EXIST IN DATABASE (so no repeats)
-# ## We'll address this idea in more depth later.
-# cur.execute("DROP TABLE IF EXISTS UmichJobs") # Normally in SQL, you need to end statements with semicolons, but often, that's not required when you're using these psycopg2 module functions to interact with the database.
+## Code to DROP TABLES IF EXIST IN DATABASE (so no repeats)
+## We'll address this idea in more depth later.
+cur.execute("DROP TABLE IF EXISTS UmichJobs") # Normally in SQL, you need to end statements with semicolons, but often, that's not required when you're using these psycopg2 module functions to interact with the database.
 
-# ## CREATE TABLE(S) IN DATABASE
-# cur.execute("CREATE TABLE IF NOT EXISTS UmichJobs(Title VARCHAR(64) PRIMARY KEY, Date Posted VARCHAR(20), Departments VARCHAR(64)")
+## CREATE TABLE(S) IN DATABASE
+cur.execute("CREATE TABLE IF NOT EXISTS UmichJobs(Title VARCHAR(64) PRIMARY KEY, Date Posted VARCHAR(20), Departments VARCHAR(64)")
 
-# ## INSERT DATA INTO TABLE(S) IN DATABASE
-# # Insert one row only
+## INSERT DATA INTO TABLE(S) IN DATABASE
+# Insert one row only
 
-# # Insert many with .executemany
-# jobs_diction = (jobs_list_umich)
+# Insert many with .executemany
+jobs_diction = (jobs_list_umich)
 
-# cur.executemany("""INSERT INTO UmichJobs(Title,Date Posted,Departments) VALUES (%(Posting_Title)s, %(Date_Posted)s, %(Department)s)""",jobs_diction)    
+cur.executemany("""INSERT INTO UmichJobs(Title,Date Posted,Departments) VALUES (%(Posting_Title)s, %(Date_Posted)s, %(Department)s)""",jobs_diction)
 
+print('Putting indeed data into the DB')
+###Putting the data into a database
+try:
+    conn = psycopg2.connect("dbname = '{0}' user = '{1}' password='{2}'".format(db_name_indeed, db_user, db_password))
+    print("Success connecting to the database")
 
+except:
+    print("Unable to connect to the database")
+    sys.exit(1)
+
+## SETUP FOR CREATING DATABASE AND INTERACTING IN PYTHON
+# cur = conn.cursor()
+cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor) # So you can insert by column name, instead of position, which makes the Python code even easier to write!
+
+## Code to DROP TABLES IF EXIST IN DATABASE (so no repeats)
+## We'll address this idea in more depth later.
+cur.execute("DROP TABLE IF EXISTS IndeedJobs") # Normally in SQL, you need to end statements with semicolons, but often, that's not required when you're using these psycopg2 module functions to interact with the database.
+
+## CREATE TABLE(S) IN DATABASE
+cur.execute("CREATE TABLE IF NOT EXISTS IndeedJobs(Title VARCHAR(64) PRIMARY KEY")
+
+## INSERT DATA INTO TABLE(S) IN DATABASE
+# Insert one row only
+
+# Insert many with .executemany
+jobs_diction = (jobs_list_indeed)
+
+cur.executemany("""INSERT INTO UmichJobs(Title) VALUES (%(Posting_Title)s)""",jobs_diction)
 
 
 ####Data Vis
 # data to plot
 n_groups = 1
-means_umich = (len(job_list_umich["Position_Title"]))
+means_umich = (len(position_list))
 means_indeed = (len(job_list_indeed))
- 
+
 # create plot
 fig, ax = plt.subplots()
 index = np.arange(n_groups)
