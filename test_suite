@@ -1,0 +1,12 @@
+import unittest
+from SI507F17_project1_cards import *
+
+class TestingCardsProj1(unittest.TestCase):
+    def test_class_variables_exist_in_class_cards(self):
+        c = Card()
+        self.assertIsNotNone(c.suit_names)
+        self.assertIsNotNone(c.rank_levels)
+        self.assertIsNotNone(c.faces)
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
