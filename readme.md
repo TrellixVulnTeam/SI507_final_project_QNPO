@@ -12,10 +12,12 @@ Run the code using Python3 in your terminal/command line, or whatever else you u
 ### Configure
 To run the code you must have a few of these configured:
 
-#Config File
+_Config File_
+
 Type in your postgres username as "db_user = '_yourUserName_'". Likewise, insert your password to the database as "db_password = '_yourPassWord_'". Also add the two database names (instructions below).
 
-#Database
+_Database_
+
 Create one called "umich_jobs" and label it as "db_name_umich". Create another called "indeed_jobs" and assign the variable "db_name_indeed" to it. Throw these into the config file as well.
 
 ### Explanation
