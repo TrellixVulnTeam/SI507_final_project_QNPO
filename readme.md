@@ -25,9 +25,13 @@ When the code runs, it will scrape 50 job postings from the umich career website
 
 The data is visuallized using matplotlib.pyplot. Expect to see a bar graph representing umich jobs and indeed jobs. 
 
+Test suite focuses on making sure functions and Classes do its job.
 
 ### Sources
 https://www.indeed.com/
+
 http://careers.umich.edu/
+
 Database coding borrowed heavily from pgexample_multiplerows_byname.py, from lecture
+
 https://pythonspot.com/en/matplotlib-bar-chart/
