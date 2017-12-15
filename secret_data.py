@@ -1,4 +1,0 @@
-applicationId = "1043467402020129849"
-developerId = "1043467402020129849"
-application_secret = "cfc6a6653707fde7381758a85dd191fa7a08be4f"
-affiliateID = "163ee432.29815760.163ee433.e7ec912d"
